@@ -1,0 +1,160 @@
+&GLOBAL
+  PROJECT Cu
+  RUN_TYPE MD
+  PRINT_LEVEL low
+&END GLOBAL
+
+&MOTION
+  &MD  
+    ENSEMBLE NVT
+    STEPS  5000
+    TIMESTEP 1.0
+    TEMPERATURE 300
+     &THERMOSTAT
+       TYPE  NOSE
+       REGION  GLOBAL
+       &NOSE
+         LENGTH               3
+         TIMECON     2.2237606346543473E+01
+       &END NOSE
+     &END THERMOSTAT
+  &END MD
+  &PRINT
+     &TRAJECTORY  
+       &EACH
+         MD               5
+       &END EACH
+     &END TRAJECTORY
+     &VELOCITIES  
+       &EACH
+         MD               1
+       &END EACH
+     &END VELOCITIES
+     &RESTART  
+       &EACH
+         MD               5
+       &END EACH
+     &END RESTART
+  &END PRINT
+  &CONSTRAINT
+     &FIXED_ATOMS
+       LIST     1..72   
+     &END FIXED_ATOMS
+  &END CONSTRAINT
+&END MOTION
+&FORCE_EVAL
+  METHOD Quickstep
+  &DFT
+		 UKS  T
+     CHARGE 0
+     POTENTIAL_FILE_NAME  GTH_POTENTIALS
+     BASIS_SET_FILE_NAME  BASIS_MOLOPT
+     WFN_RESTART_FILE_NAME ./phenol-RESTART.wfn 
+    &MGRID
+      CUTOFF 400
+      NGRIDS 10
+      REL_CUTOFF 40
+    &END MGRID
+    &QS
+      EPS_DEFAULT 1.0E-12
+      EPS_PGF_ORB 1.0E-6
+      EXTRAPOLATION ASPC
+      EXTRAPOLATION_ORDER 3
+    &END QS
+    &SCF
+      EPS_SCF 1.0E-5
+      MAX_SCF 30
+      SCF_GUESS RESTART
+       &OT
+        PRECONDITIONER FULL_ALL
+        MINIMIZER  BROYDEN
+        BROYDEN_BETA     0.9
+        BROYDEN_SIGMA     0.1
+        LINESEARCH  2PNT
+       &END OT
+       &OUTER_SCF
+         EPS_SCF 1.0E-5
+         MAX_SCF 5
+       &END OUTER_SCF
+       &MIXING ON
+         ALPHA 0.1
+         BETA  0.5
+       &END MIXING
+       &PRINT
+          &RESTART_HISTORY
+            FILENAME = MD_RESTART_HISTORY.wfn
+            ADD_LAST NUMERIC
+            BACKUP_COPIES 5
+            &EACH
+            &END EACH
+          &END RESTART_HISTORY
+      &END PRINT 
+    &END SCF
+
+    &XC
+      &XC_FUNCTIONAL PBE
+      &END XC_FUNCTIONAL
+      &XC_GRID
+        XC_SMOOTH_RHO NN10
+        XC_DERIV SPLINE2_SMOOTH
+      &END XC_GRID
+      &vdW_POTENTIAL
+         POTENTIAL_TYPE PAIR_POTENTIAL
+         &PAIR_POTENTIAL
+            TYPE DFTD3
+            PARAMETER_FILE_NAME dftd3.dat
+            REFERENCE_FUNCTIONAL PBE
+            R_CUTOFF 10.
+         &END PAIR_POTENTIAL
+      &END vdW_POTENTIAL 
+    &END XC
+    &PRINT
+      &MULLIKEN  SILENT
+        FILENAME = CHARGE.mulliken
+        &EACH
+           MD               5
+        &END EACH
+      &END MULLIKEN
+    &END PRINT
+  &END DFT
+  &PRINT
+    &FORCES ON
+    &END FORCES
+  &END PRINT
+  &SUBSYS
+    &CELL
+      ABC [angstrom] 15.3359   13.2813   26.2608
+      PERIODIC XYZ
+    &END CELL
+    &TOPOLOGY
+      COORD_FILE_NAME init.xyz
+      COORD_FILE_FORMAT xyz
+    &END TOPOLOGY
+
+    &KIND O
+       BASIS_SET DZVP-MOLOPT-SR-GTH
+       POTENTIAL GTH-PBE-q6
+    &END KIND
+    &KIND C
+      BASIS_SET DZVP-MOLOPT-SR-GTH
+      POTENTIAL GTH-PBE-q4
+    &END KIND
+    &KIND H
+     BASIS_SET DZVP-MOLOPT-SR-GTH
+     POTENTIAL GTH-PBE-q1
+     MASS 2.0
+    &END KIND
+    &KIND Cu
+       BASIS_SET DZVP-MOLOPT-SR-GTH
+       POTENTIAL GTH-PBE-q11
+    &END KIND
+    &KIND N
+      BASIS_SET DZVP-MOLOPT-SR-GTH
+      POTENTIAL GTH-PBE-q5
+    &END KIND
+    &KIND K
+      BASIS_SET DZVP-MOLOPT-SR-GTH
+      POTENTIAL GTH-PBE-q9
+    &END KIND
+  &END SUBSYS
+&END FORCE_EVAL
