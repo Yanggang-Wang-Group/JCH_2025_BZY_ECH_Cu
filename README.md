@@ -1,12 +1,12 @@
 # Mechanistic Investigations on Benzaldehyde Hydrogenation on Cu Electrocatalyst: The Role of Local Solvent Environment
 
-Author: Chong-Hui Jiang, Hao Cao, Qing-Yang Liu, Zhen Yao, Wei Lin*, Yang-Gang Wang*
+Author: Chong-Hui Jiang^1, Hao Cao1, Qing-Yang Liu1, Zhen Yao1, Wei Lin2,*, Yang-Gang Wang1,*
+
+1 Department of Chemistry, Southern University of Science and Technology, Shenzhen 518055, Guangdong, China
+2 State Key Laboratory of Photocatalysis on Energy and Environment, College of Chemistry, Fuzhou University, Fuzhou 350108, Fujian, China
 
 ---
 
-Raw data for "Mechanistic Investigations on Benzaldehyde Hydrogenation on Cu Electrocatalyst: The Role of Local Solvent Environment" published in xx.xx, the first author is Chong-hui Jiang.
+Raw data for "Mechanistic Investigations on Benzaldehyde Hydrogenation on Cu Electrocatalyst: The Role of Local Solvent Environment" published in xx.xx.
 
-IF there are any problem downloading, The repository is also
-available at:
 
-[https://mirrors.sustech.edu.cn/git/wang_group/jch_2025_bzy_ech_cu.git](https://mirrors.sustech.edu.cn/git/wang_group/jch_2025_bzy_ech_cu.git)
